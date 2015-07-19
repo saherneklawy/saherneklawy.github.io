@@ -1,0 +1,37 @@
+---
+layout: post
+title: ! '"Bug Free Zone"'
+date: 2009-11-02 00:42:17.000000000 +02:00
+categories:
+- Opensource
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '10173910'
+  _wpas_done_twitter: '1'
+  twitter_cards_summary_img_size: a:6:{i:0;i:348;i:1;i:360;i:2;i:3;i:3;s:24:"width="348"
+    height="360"";s:4:"bits";i:8;s:4:"mime";s:9:"image/png";}
+author:
+  login: saherneklawy
+  email: saher.neklawy@gmail.com
+  display_name: saherneklawy
+  first_name: ''
+  last_name: ''
+excerpt: !ruby/object:Hpricot::Doc
+  options: {}
+---
+<p>As you can see from the title of my post, it's all about bug. But not bugs as in insects, but as in computer bugs/problems. In the <a href="http://se.bigbuddysociety.net/wiki/index.php?title=OSSE">open source development course</a>, we were introduced to the mozilla development ecosystem.</p>
+<p>This introduction was done via <a href="http://www.mozillamessaging.com/en-US/thunderbird/">Thunderbird</a>, the Mozilla email client. The first step was to compile a debug build for Thunderbird from source. Instructions for that could be found <a href="https://developer.mozilla.org/En/Simple_Thunderbird_build">here</a>. Along the process, <a href="http://se.bigbuddysociety.net/wiki/index.php?title=A_step_by_step_tutorial_for_building_thunderbird">several bumps</a> along the way were met, but managed to get by them.</p>
+<p>After the successful compilation, I had to start tackling the  the bug famous in the open source educational community. The <a href="http://se.bigbuddysociety.net/wiki/index.php?title=Fixing_a_Bug_in_Thunderbird#The_Problem">Thunderbird auto linkification bug</a>. This bug is usually exists in Thunderbird, and usually mainly found under the <a href="https://landfill.bugzilla.org/bugzilla-3.0-branch/">test bugzilla</a>.</p>
+<p><img class="aligncenter size-medium wp-image-37" title="Thunderbird Autolinkification Bug" src="assets/thunderbird_mailto_bug.png?w=290" alt="Thunderbird Autolinkification Bug" width="290" height="300" /></p>
+<p>To start on fixing that bug, a <a href="http://wp.me/pFeWE-C">search of the source code</a> is needed. Since Thunderbird is a Mozilla project, they offer an on-line portal for searching their code using <a href="http://mxr.mozilla.org/comm-central/">MXR</a>. This tool searches the content of the repository. After some searching, the best query to find the file related to this problem was "mailto". This is because the bug is related to the mail rendering component, when looking at it from purely a user's point of view.</p>
+<p>At finding the correct file, the hacking started. Once that was done, I generated a patch of the file i changed from inside the <code>comm-central/mozilla</code> folder.</p>
+<p>[caption id="attachment_41" align="aligncenter" width="288" caption="Thunderbird Bug"]<img class="size-medium wp-image-41 " title="Thunderbird Bug" src="assets/thunderbird_bug_fixed.png?w=288" alt="Thunderbird Bug Fixed" width="288" height="300" />[/caption]</p>
+<p>Once the results of my fixing looked promising, i decided to submit a bug report on the test bugzilla containing a patch. But before the submission, i decided to test my patch first on an <a href="http://beaufour.dk/jst-review/">automated reviewer</a>. To my surprise, it showed me problems that would have never came up on my mind.</p>
+<p>&nbsp;</p>
+<p>[caption id="attachment_42" align="aligncenter" width="450" caption="JST Review"]<img class="size-full wp-image-42 " title="JST Review" src="assets/rev1.png" alt="JST Review" width="450" height="111" />[/caption]</p>
+<p>Passing the automated reviewer gives one a boost of confidence, even if it responds to you with the message of "Congratulations! I found no coding problems in your patch. That does not mean that it is ready for check in though... you still need to pass something more intelligent than a script. :-)".</p>
+<p>Now, it was time to submit the bug, attach the patch, and request review. This was amazingly simple. Just filling a form, being very detailed, and attaching the patch file. After the <a href="https://landfill.bugzilla.org/bugzilla-3.0-branch/show_bug.cgi?id=7258">submission</a> of the bug report, I requested reviews from 2 parties, which I am still waiting for a response for.</p>
+<p>On a final note, I found this exercise and experience very entertaining and thrilling. The rush of hacking the code, and submitting was a new feeling for me. This test experience drove me to submit an <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=525761">actual bug</a> related to bespin's new refactoring code. Hopefully I get a good review on it too, and possibly a commit :D.</p>

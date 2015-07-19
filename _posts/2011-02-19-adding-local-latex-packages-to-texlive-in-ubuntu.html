@@ -1,0 +1,24 @@
+---
+layout: post
+title: Adding local latex packages to texlive in ubuntu
+date: 2011-02-19 14:52:19.000000000 +02:00
+categories:
+- Latex
+tags:
+- Latex
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '10173910'
+  _wpas_done_twitter: '1'
+author:
+  login: saherneklawy
+  email: saher.neklawy@gmail.com
+  display_name: saherneklawy
+  first_name: ''
+  last_name: ''
+excerpt: !ruby/object:Hpricot::Doc
+  options: {}
+---
+<p>When having custom packages to use for a document, you need to put them next your latex files when compiling. This causes problems when you need these packages for many documents. The solution is to add these packages to the latex installation. This can be done for the current user by creating a latex tree in the $HOME/texmf directory. The structure of this directory needs to follow the texmf-local described <a href="http://en.wikibooks.org/wiki/LaTeX/Packages/Installing_Extra_Packages">here</a>. This directory is searched by default by the texlive installation.</p>

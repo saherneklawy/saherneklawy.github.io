@@ -1,0 +1,258 @@
+---
+layout: page
+title: ''
+date: 2010-10-02 16:52:59.000000000 +02:00
+categories: []
+tags: []
+status: draft
+type: page
+published: false
+meta:
+  _edit_last: '10173910'
+  _wp_page_template: default
+author:
+  login: saherneklawy
+  email: saher.neklawy@gmail.com
+  display_name: saherneklawy
+  first_name: ''
+  last_name: ''
+excerpt: !ruby/object:Hpricot::Doc
+  options: {}
+---
+<p>var ID_LIST_URL = 'http://se.bigbuddysociety.net/wiki/api.php?action=query&amp;list=allpages&amp;aplimit=500&amp;format=json&amp;callback=?';<br />
+var BASE_URL = 'http://se.bigbuddysociety.net/wiki/api.php?action=query&amp;prop=info|links|revisions&amp;pllimit=500&amp;format=json&amp;callback=?&amp;pageids=';<br />
+var page_index = Array();<br />
+var node_list = Array();<br />
+var edge_from_list = Array();<br />
+var edge_to_list = Array();</p>
+<p>var title = "";</p>
+<p>function DisplayDetails(id) {<br />
+if (id == -1) {<br />
+title = "";<br />
+$("#details").text("");<br />
+} else {<br />
+title = page_index[id].title;<br />
+$("#details").text(page_index[id].title);<br />
+}<br />
+}</p>
+<p>function ProcessData(pages_data) {<br />
+var title_index = {};<br />
+$.each(pages_data.query.pages, function(i, page){<br />
+page_index[page.pageid] = page;<br />
+title_index[page.title.toLowerCase()] = page.pageid;<br />
+});<br />
+var edge_from_list_t = Array();<br />
+var edge_to_list_t = Array();<br />
+var index_index = Array();<br />
+var k = 0;<br />
+$.each(page_index, function(i, node) {<br />
+if (!node || !node.links) return true;</p>
+<p>var degree = 0;<br />
+var temp_from = Array();<br />
+var temp_to = Array();<br />
+$.each(node.links, function(j, link) {<br />
+var linked = title_index[link.title.toLowerCase()];<br />
+if (!linked) return true;</p>
+<p>degree++;<br />
+temp_from.push(k);<br />
+temp_to.push(linked);<br />
+});<br />
+if (degree == 0) return true;</p>
+<p>node_list[k] = node;<br />
+index_index[node.pageid] = k;<br />
+$.each(temp_from, function(k, from) { edge_from_list_t.push(from); });<br />
+$.each(temp_to, function(k, to) { edge_to_list_t.push(to); });<br />
+k++;<br />
+});<br />
+var temp = Array();<br />
+$.each(edge_to_list_t, function(i, x) {<br />
+if (index_index[x] || index_index[x] == 0) {<br />
+edge_from_list.push(edge_from_list_t[i]);<br />
+edge_to_list.push(index_index[x]);<br />
+}<br />
+});<br />
+}</p>
+<p>function initialize() {<br />
+$.getJSON(ID_LIST_URL, function(data) {<br />
+$.getJSON(BASE_URL + $.map(data.query.allpages, function(page) { return page.pageid + ''; }).join('|'), ProcessData);<br />
+});<br />
+}</p>
+<p>$(document).ready(initialize);</p>
+<p>boolean dragging = false;<br />
+Node draggedNode = null;<br />
+int node_radius = 25;<br />
+int node_radius_2 = node_radius*node_radius;<br />
+int edge_end_radius = 5;</p>
+<p>class Node {<br />
+double x, y;<br />
+color fillColor;<br />
+Object data;<br />
+boolean markedForUpdate, beingDragged;<br />
+int sx, sy, scounter, scounter_max;</p>
+<p>Node (int xcenter, int ycenter, Object data) {<br />
+fillColor = #ffffff;<br />
+markedForUpdate = false;<br />
+x=xcenter;<br />
+y=ycenter;<br />
+scounter_max = (int)random(30, 100);<br />
+}</p>
+<p>void update() {<br />
+if (scounter == 0) {<br />
+sx = random(-0.5, 0.5);<br />
+sy = random(-0.5, 0.5);<br />
+}<br />
+fill(fillColor);<br />
+ellipse(x,y,node_radius*2,node_radius*2);<br />
+fill(#ff0000);<br />
+markedForUpdate = false;<br />
+x += sx;<br />
+y += sy;<br />
+x = max(node_radius, x);<br />
+y = max(node_radius, y);<br />
+if (x &gt;= width - node_radius) sx = -sx;<br />
+if (y &gt;= height - node_radius) sy = -sy;<br />
+scounter = (scounter + 1) % scounter_max;<br />
+}</p>
+<p>boolean at(int xtest, int ytest) {<br />
+xtest -= x;<br />
+ytest -= y;<br />
+return (xtest*xtest)+(ytest*ytest) &lt; node_radius_2;<br />
+}</p>
+<p>void click() {<br />
+if(beingDragged) {<br />
+beingDragged=false;<br />
+return;<br />
+}<br />
+// Callback<br />
+}</p>
+<p>void over() {<br />
+color old = fillColor;<br />
+fillColor=#0000ff;<br />
+if(old!=fillColor)<br />
+rollOver();<br />
+// Callback<br />
+}</p>
+<p>void out() {<br />
+color old = fillColor;<br />
+fillColor=#ffffff;<br />
+if(old!=fillColor)<br />
+rollOut();<br />
+// Callback<br />
+}<br />
+void rollOver()<br />
+{<br />
+//callback<br />
+DisplayDetails(data.pageid);<br />
+}<br />
+void rollOut()<br />
+{<br />
+//callback<br />
+DisplayDetails(-1);<br />
+}<br />
+}</p>
+<p>class Edge<br />
+{<br />
+Node from, to;<br />
+Edge(Node f, Node t) {<br />
+from = f;<br />
+to = t;<br />
+}</p>
+<p>void update() {<br />
+int x0 = from.x-to.x;<br />
+int y0 = from.y-to.y;<br />
+float factor = (node_radius)/sqrt(y0*y0+x0*x0);<br />
+float x1 = factor*x0;<br />
+float y1 = factor*y0;</p>
+<p>x0=-x0;<br />
+y0=-y0;<br />
+float x2 = factor*x0;<br />
+float y2 = factor*y0;</p>
+<p>line(x2+from.x,y2+from.y,x1+to.x,y1+to.y);<br />
+fill(#00ff00);<br />
+ellipse(x1+to.x,y1+to.y,edge_end_radius*2,edge_end_radius*2);<br />
+}<br />
+}</p>
+<p>void mousePressed() {<br />
+for(int i=0;i&lt;nodes.size();i++) {<br />
+Node n = nodes.get(i);<br />
+if(n.at(mouseX,mouseY)) {<br />
+draggedNode = n;<br />
+return;<br />
+}<br />
+}<br />
+draggedNode = null;<br />
+}</p>
+<p>void mouseDragged() {<br />
+if(draggedNode != null) draggedNode.beingDragged=true;<br />
+}</p>
+<p>void mouseReleased() {<br />
+draggedNode=null;<br />
+}</p>
+<p>void mouseClicked() {<br />
+for(int i=0;i&lt;nodes.size();i++) {<br />
+Node n = nodes.get(i);<br />
+if(n.at(mouseX,mouseY)) {<br />
+n.click();<br />
+return;<br />
+}<br />
+}<br />
+}</p>
+<p>ArrayList nodes = new ArrayList();<br />
+ArrayList edges = new ArrayList();<br />
+boolean init = true;</p>
+<p>void setup() {<br />
+size(1000,500);<br />
+background(#cccccc);<br />
+for (int i = 0; i &lt; node_list.length; i++)<br />
+nodes.add(new Node(round(random(width * 0.05, width * 0.95)), round(random(height * 0.05, height * 0.95)), node_list[i]));</p>
+<p>for (int i = 0; i &lt; edge_from_list.length; i++)<br />
+edges.add(new Edge(nodes.get(edge_from_list[i]), nodes.get(edge_to_list[i])));<br />
+}</p>
+<p>boolean checkNode(Node n, boolean aNodeIsSelected) {<br />
+if(!n.markedForUpdate) {<br />
+if(!aNodeIsSelected &amp;&amp; n.at(mouseX, mouseY)) {<br />
+n.over();<br />
+aNodeIsSelected = true;<br />
+} else {<br />
+n.out();<br />
+}<br />
+n.markedForUpdate=true;<br />
+}<br />
+return aNodeIsSelected;<br />
+}</p>
+<p>void draw() {<br />
+if(!init &amp;&amp; mouseX==pmouseX &amp;&amp; mouseY==pmouseY) return;<br />
+init = false;<br />
+background(#cccccc);<br />
+boolean aNodeIsSelected = false;</p>
+<p>for(int i=0;i&lt;edges.size();i++) {<br />
+Edge e = (Edge)edges.get(i);<br />
+if(draggedNode==null) {<br />
+aNodeIsSelected = checkNode(e.from, aNodeIsSelected);<br />
+aNodeIsSelected = checkNode(e.to, aNodeIsSelected);<br />
+}<br />
+e.update();<br />
+}</p>
+<p>if(draggedNode!=null) {<br />
+draggedNode.x=mouseX;//-pmouseX;<br />
+draggedNode.y=mouseY;//-pmouseY;<br />
+}</p>
+<p>for(int i=0;i&lt;nodes.size();i++) {<br />
+Node n  = nodes.get(i);<br />
+if(draggedNode!=n) // brings dragged node on top<br />
+n.update();<br />
+}</p>
+<p>if(draggedNode!=null) draggedNode.update();<br />
+}</p>
+<p>void setup() {<br />
+size(200, 200);<br />
+background(#cccccc);<br />
+textFont(loadFont("Arial"),15);<br />
+text(title,0,20);<br />
+}<br />
+void draw()<br />
+{<br />
+background(#cccccc);<br />
+fill(#ff0000);<br />
+text(title,0,15,200,200);<br />
+}</p>

@@ -1,0 +1,30 @@
+---
+layout: post
+title: Software versions, documentation, and the PAIN
+date: 2009-10-12 21:52:12.000000000 +02:00
+categories:
+- Opensource
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '10173910'
+  delicious: a:3:{s:5:"count";s:1:"0";s:9:"post_tags";s:0:"";s:4:"time";s:10:"1266516076";}
+  reddit: a:2:{s:5:"count";s:1:"0";s:4:"time";s:10:"1266516083";}
+author:
+  login: saherneklawy
+  email: saher.neklawy@gmail.com
+  display_name: saherneklawy
+  first_name: ''
+  last_name: ''
+excerpt: !ruby/object:Hpricot::Doc
+  options: {}
+---
+<p>When working on a piece of software using a framework or an API, the first source of help to rely on is the official documentation. As development on that code base continues, so does the documentation that changes accordingly. Sadly this is not always the case!!</p>
+<p>At the time of this post, the latest stable release of the <a title="ubiquity" href="https://ubiquity.mozilla.com/" target="_blank">ubiquity</a> project is version 0.54  and the version pulled from mercurial is 0.55pre8. I was trying to write an <a href="http://ubiquity.mozilla.com/trac/ticket/872" target="_blank">enhancement</a> to provide feedback to a command's author. My testing environment had the latest stable version, and as the <a href="https://wiki.mozilla.org/Labs/Ubiquity/Ubiquity_0.5_Author_Tutorial" target="_blank">ubiquity wiki</a> is under 0.5, I assumed it matches my currently running version. At the end of the wiki, a link is provided with the documentation of the <a href="https://ubiquity.mozilla.com/hg/ubiquity-firefox/raw-file/tip/ubiquity/index.html#modules/cmdutils.js" target="_blank">CmdUtils</a> library, containg the command <code>CmdUtils.getCommand(id)</code>.</p>
+<p>Such a command is very helpful as it returns the object representing the command matching the given id. Thus, details about the command's author could be obtained, and hence sending to them feedback. Being very excited about this, I gave it a test, and to my shock nothing worked. Even to my bigger surprise, <a href="http://getfirebug.com/" target="_blank">firebug</a> that is used for <a href="https://wiki.mozilla.org/Labs/Ubiquity/Ubiquity_0.5_Author_Tutorial#Firebug" target="_blank">debuging ubiquity</a> commands showed <code><span style="color:#ff0000;">CmdUtils.getCommand is not a function</span></code>.</p>
+<p>This caught curiosity, so I opened the ubiquity extension's installation folder, and took a look at the "modules/cmdutils.js" file. With no surprise, the file did not contain the <code>CmdUtils.getCommand</code> function.</p>
+<p>At the same time, <a href="http://aelguindy.blogspot.com/2009/10/easy-alternative-to-svn.html" target="_blank">Abdallah El Guindy</a> was working on the same enhancement, reached the same conclusion, but had the function correctly working. When I asked about his running ubiquity version, it as the latest development version 0.55pre8. After taking and installing that version of the code, the "modules/cmdutils.js" file was the one matching the current online documentation.</p>
+<p>Having the correct version number attached to the online documentation, would have saved development time and confusion. Such a problem is not restricted to the <a title="ubiquity" href="https://ubiquity.mozilla.com/" target="_blank">ubiquity</a> project, but is also seen in other frameworks or APIs. The main lesson learned here, is that one has to be very careful during development, and not give up easily on finding the root of the problem.</p>
+<p>On a small side note, this same problem with <a title="ubiquity" href="https://ubiquity.mozilla.com/" target="_blank">ubiquity</a> 0.54 is also in 0.55pre7 (the current latest beta). So the <code>CmdUtils.getCommand(id)</code> is a brand new addition to the code base.</p>

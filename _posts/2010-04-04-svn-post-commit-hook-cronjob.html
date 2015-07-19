@@ -1,0 +1,81 @@
+---
+layout: post
+title: SVN post-commit hook cronjob
+date: 2010-04-04 14:08:17.000000000 +02:00
+categories:
+- Opensource
+- Technical
+tags:
+- python
+- svn
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '10173910'
+  _wpas_done_twitter: '1'
+author:
+  login: saherneklawy
+  email: saher.neklawy@gmail.com
+  display_name: saherneklawy
+  first_name: ''
+  last_name: ''
+excerpt: !ruby/object:Hpricot::Doc
+  options: {}
+---
+<p>Few SVN hosting sites provide ssh access to their svn servers. Such is needed to create hooks, like a post-commit hook that sends an email with every commit. Such hooks are often required by the development team. This article discusses the creation of a cron job that polls the SVN repository to simulate a post-commit hook that sends an email with every commit.</p>
+<h3>Setting up sendEmail</h3>
+<p>sendEmail is a nice tool to send emails via command line. This is needed to script in the cronjob sending an email. On ubuntu, install it from apt-get by:</p>
+<pre>sudo apt-get install sendemail libio-socket-ssl-perl libcrypt-ssleay-perl</pre>
+<p>The latter 2 packages are needed for connecting to an SMTP server that uses a secure connection (like Gmail, which is used in the example).</p>
+<h3>The post-commit hook script</h3>
+<p>The following is a python script, that could be added as an entry in the cron table<br />
+[sourcecode language="python"]<br />
+#! /usr/bin/env python</p>
+<p>import os,re</p>
+<p>log_file = LOG_DIR<br />
+svn_log_seperator  = '------------------------------------------------------------------------'<br />
+svn_dir = SVN_DIR<br />
+mail_filter = '[special mail identifier in subject]'<br />
+message_file = '/tmp/commit_mail'</p>
+<p>mail_from = MAIL_FROM<br />
+mail_to = MAIL_TO</p>
+<p>smtp_server = &quot;smtp.gmail.com:587&quot;<br />
+smtp_user = SMTP_USER<br />
+smtp_pass = SMTP_PASS</p>
+<p>def send_mail(subject,mail):<br />
+    mail_file = open(message_file,'w')<br />
+    mail_file.write(mail)<br />
+    mail_file.close()<br />
+    mail_command = 'sendEmail -f %s -t %s -u &quot;%s&quot; -s %s -xu &quot;%s&quot; -xp &quot;%s&quot; -o message-file=&quot;%s&quot;' % (mail_from, mail_to, subject, smtp_server, smtp_user, smtp_pass,message_file)<br />
+    print mail_command<br />
+    os.system(mail_command)</p>
+<p>print &quot;analyzing old log file&quot;</p>
+<p>old_log_f = open(log_file)<br />
+old_log = old_log_f.read().split(svn_log_seperator)<br />
+old_log_f.close()</p>
+<p>print &quot;updating svn&quot;<br />
+os.system(&quot;/usr/local/bin/svn update %s&quot; % svn_dir)<br />
+os.system(&quot;/usr/local/bin/svn log %s &gt; %s&quot; % (svn_dir,log_file))<br />
+print &quot;got new log&quot;</p>
+<p>new_log_f = open(log_file)<br />
+new_log = new_log_f.read().split(svn_log_seperator)<br />
+new_log_f.close()</p>
+<p>delta = set(new_log) - set(old_log)</p>
+<p>for commit in delta:<br />
+    l = [x for x in commit.split('\n') if x]<br />
+    details = l[0].split('|')<br />
+    subject = &quot;%s %s %s&quot; %(mail_filter,details[0],details[1])<br />
+    f_diff=os.popen('/usr/local/bin/svn diff -c %s %s' % (details[0], svn_dir))<br />
+    diff = f_diff.read()<br />
+    f_diff.close()<br />
+    mail = &quot;%s\n%s&quot; % (commit, diff)<br />
+    send_mail(subject,mail)<br />
+[/sourcecode]</p>
+<h3>Perquisites before running the script</h3>
+<ul>
+<ol>Having a working copy of the svn reposity</ol>
+<ol>Running the following command once before the script:</p>
+<pre>svn log &gt; $PATH_TO_LOG_FILE</pre>
+</ol>
+</ul>

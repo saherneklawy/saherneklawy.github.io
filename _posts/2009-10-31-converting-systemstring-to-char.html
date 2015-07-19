@@ -1,0 +1,38 @@
+---
+layout: post
+title: Converting System::String to char *
+date: 2009-10-31 18:05:14.000000000 +02:00
+categories:
+- Technical
+tags:
+- c++
+- cstring
+- visual c++
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '10173910'
+  _wpas_done_twitter: '1'
+author:
+  login: saherneklawy
+  email: saher.neklawy@gmail.com
+  display_name: saherneklawy
+  first_name: ''
+  last_name: ''
+excerpt: !ruby/object:Hpricot::Doc
+  options: {}
+---
+<p>The official way to convert a visual c++ System::String to a char * could be found <a href="http://support.microsoft.com/kb/311259">here</a>. Such strings are everywhere in windows forms applications.</p>
+<p>A simpler way (for people who are used to using standard c\c++) to do the conversion is as follows:<br />
+<code><br />
+void string2charPtr(String ^orig, char *&amp;out)<br />
+{<br />
+    int length = orig-&gt;Length;<br />
+    out = new char[length+1];<br />
+    for(int i=0;i&lt;length;i++)<br />
+        out[i] = (char) orig[i];<br />
+    out[length] = &#039;&#039;;<br />
+}<br />
+</code></p>
+<p>Please feel free to comment on the function above.</p>

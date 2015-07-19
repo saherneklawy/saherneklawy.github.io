@@ -1,0 +1,218 @@
+---
+layout: post
+title: Two Columned LaTeX Presentation Slides
+date: 2009-12-07 14:01:36.000000000 +02:00
+categories:
+- Latex
+- Technical
+tags:
+- beamer
+- Latex
+- presentation
+- two columns
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '10173910'
+  delicious: a:3:{s:5:"count";s:1:"0";s:9:"post_tags";s:0:"";s:4:"time";s:10:"1260569823";}
+  _wpas_done_twitter: '1'
+  reddit: a:2:{s:5:"count";s:1:"0";s:4:"time";s:10:"1260569818";}
+  _oembed_e2c4c80ee73924c89caddae0eb24c067: ! '{{unknown}}'
+  _oembed_262a5e97ba7e266d1ea4068d662af179: ! '{{unknown}}'
+  _oembed_ab0690caaa75eba164ddb0c23e570602: ! '{{unknown}}'
+  _oembed_5844c0e3ff9c2224c3660e8b208b6d3c: ! '{{unknown}}'
+  _oembed_7bad9c4f99a358a4539316a163d14ae8: ! '{{unknown}}'
+  _oembed_f67a0cf5501612abee7b18d867600b56: ! '{{unknown}}'
+  _oembed_f6df11a4337ac3a51851fd041aa6cc97: ! '{{unknown}}'
+  _oembed_43c00525b3d941f46bd906825803b871: ! '{{unknown}}'
+  _oembed_a994cbe747f225a7d4ebb2323637828e: ! '{{unknown}}'
+  _oembed_ccfdc325d75a9b4ec5f9ceedc7c42210: ! '{{unknown}}'
+  _oembed_0676ca29beb9c33b6a606b88f8e2a543: ! '{{unknown}}'
+  _oembed_9d4936a02e5c6c345ecba2a819fbe8ef: ! '{{unknown}}'
+  _oembed_66d6593a75f06515a410a9d893a4087f: ! '{{unknown}}'
+  _oembed_20741ea7a6c06050e7a3f15bb638aaeb: ! '{{unknown}}'
+  _oembed_c2507ca76c9dd3d9fae8c2ba8eaf6e69: ! '{{unknown}}'
+  _oembed_4eb3e45cbf4ceea8ca5684a9d685c9e3: ! '{{unknown}}'
+  _oembed_7c4ab1fcb5e4ae5cfdadc2c028a80381: ! '{{unknown}}'
+  _oembed_946459111c6d7c09d169926fca07cd67: ! '{{unknown}}'
+  _oembed_1e8ca3713c3a69b6ed1941d5a3c571c0: ! '{{unknown}}'
+  _oembed_bd7564f2b4375b27e0460ed2786302a8: ! '{{unknown}}'
+author:
+  login: saherneklawy
+  email: saher.neklawy@gmail.com
+  display_name: saherneklawy
+  first_name: ''
+  last_name: ''
+excerpt: !ruby/object:Hpricot::Doc
+  options: {}
+---
+<p>Coming from a <a href="http://en.wikipedia.org/wiki/Microsoft_PowerPoint">Power Point</a> background of creating presentation slides, i am often tempted to used a two column approach when laying out the content of my slides. This is where text is shown on the left column and related pictures are placed on the right.</p>
+<p>After i decided to to move all my document creation work to be in <a href="http://en.wikipedia.org/wiki/LaTeX">LaTeX</a>, I started to also create my presentations that way too. Such a feat is made possible using the <a href="http://en.wikipedia.org/wiki/Beamer_%28LaTeX%29">beamer</a> document class, whose user guide could be found <a href="http://www.ctan.org/tex-archive/macros/latex/contrib/beamer/doc/beameruserguide.pdf">here</a>.</p>
+<p>The environment for a single slide is the "frame" environment. It is used a follows:</p>
+<p>[sourcecode]<br />
+\begin{frame}{frame title}</p>
+<p>\end{frame}<br />
+[/sourcecode]</p>
+<p>To be able to split the frame (slide) into two columns, the "columns" environment is places inside the slide content. It is used as follows:</p>
+<p>[sourcecode]<br />
+\begin{columns}<br />
+\column{column_width} %first column<br />
+column 1 content<br />
+\column{column_width} %second column<br />
+column 2 content<br />
+\column{column_width} %third column<br />
+column 3 content<br />
+...<br />
+[/sourcecode]</p>
+<p>It is best to have the column_width in terms of the text width. So for example:</p>
+<p>[sourcecode light="true"]<br />
+\column{0.5\textwidth} %half slide's text width<br />
+[/sourcecode]</p>
+<p>An example for a two columned slide looks as like:</p>
+<p>[sourcecode collapse="true" wraplines="true"]<br />
+\documentclass{beamer}<br />
+\mode&lt;presentation&gt;<br />
+{<br />
+  \usetheme[width=2cm]{Hannover}<br />
+  \setbeamercovered{transparent}<br />
+}<br />
+\title[Presentation]{Presentation}<br />
+\author[Saher Mohamed El-Neklawy]{Saher Mohamed El-Neklawy}</p>
+<p>\begin{document}<br />
+  \begin{frame}{Frame Title}<br />
+    \begin{columns}<br />
+      \column{0.5\textwidth}<br />
+	\begin{itemize}<br />
+	\item Item 1<br />
+	\item Item 2<br />
+	\item Item 3<br />
+	\end{itemize}<br />
+      \column{0.5\textwidth}<br />
+	\includegraphics[width=\textwidth]{i1.eps}</p>
+<p>	\includegraphics[width=\textwidth]{i2.eps}<br />
+    \end{columns}<br />
+  \end{frame}<br />
+\end{document}<br />
+[/sourcecode]</p>
+<p>[caption id="attachment_66" align="aligncenter" width="300" caption="Two Columned Slide"]<a href="http://saherneklawy.files.wordpress.com/2009/12/two_columns.png"><img class="size-medium wp-image-66" title="Two Columned Slide" src="assets/two_columns.png?w=300" alt="" width="300" height="224" /></a>[/caption]</p>
+<p>The next step is to sequence the appearance of the images along with the images. In the beamer class, this could be done using the "" operator, following a certain component in the frame. The "n" represents when the component appears in the frame. For example:</p>
+<p>[sourcecode]<br />
+\begin{itemize}<br />
+  \item&lt;2&gt; Item 1 % seen after 1 transition<br />
+  \item&lt;3&gt; Item 2 % seen after 2 transition<br />
+  \item&lt;4&gt; Item 3 % seen after 3 transition<br />
+\end{itemize}<br />
+[/sourcecode]</p>
+<p>In a sense, the "" splits a frame into n slides, placing the respective component in the nth slide of that frame. For more advanced uses of "", check out the <a href="http://www.ctan.org/tex-archive/macros/latex/contrib/beamer/doc/beameruserguide.pdf">beamer class user guide</a>.</p>
+<p>To do the same for images, the "\visible" or "\only" macros could be used along with the "" operator.</p>
+<p>With using "\visible", the slides would now look like:</p>
+<p>[sourcecode collapse="true"]<br />
+\documentclass{beamer}<br />
+\mode&lt;presentation&gt;<br />
+{<br />
+  \usetheme[width=2cm]{Hannover}<br />
+  \setbeamercovered{transparent}<br />
+}<br />
+\title[Presentation]{Presentation}<br />
+\author[Saher Mohamed El-Neklawy]{Saher Mohamed El-Neklawy}</p>
+<p>\begin{document}<br />
+  \begin{frame}{Frame Title}<br />
+    \begin{columns}<br />
+      \column{0.5\textwidth}<br />
+	\begin{itemize}<br />
+	  \item&lt;2&gt; Item 1<br />
+	  \item&lt;3&gt; Item 2<br />
+	  \item&lt;4&gt; Item 3<br />
+	\end{itemize}<br />
+      \column{0.5\textwidth}<br />
+	\visible&lt;2&gt;<br />
+	{<br />
+	  \includegraphics[width=\textwidth]{i1.eps}<br />
+	}<br />
+	\visible&lt;3&gt;{<br />
+	  \includegraphics[width=\textwidth]{i2.eps}<br />
+	}<br />
+    \end{columns}<br />
+  \end{frame}<br />
+\end{document}<br />
+[/sourcecode]</p>
+<p>[caption id="attachment_74" align="aligncenter" width="300" caption="Sequenced Two Columned 1"]<a href="http://saherneklawy.files.wordpress.com/2009/12/two_columns_sequenced_1.png"><img class="size-medium wp-image-74" title="Sequenced Two Columned 1" src="assets/two_columns_sequenced_1.png?w=300" alt="Sequenced Two Columned 1" width="300" height="225" /></a>[/caption]</p>
+<p>[caption id="attachment_75" align="aligncenter" width="300" caption="Sequenced Two Columned 2"]<a href="http://saherneklawy.files.wordpress.com/2009/12/two_columns_sequenced_2.png"><img class="size-medium wp-image-75" title="Sequenced Two Columned 2" src="assets/two_columns_sequenced_2.png?w=300" alt="Sequenced Two Columned 2" width="300" height="225" /></a>[/caption]</p>
+<p>The problem with "\visible" is that it keeps the place of the component from the previous transition reserved in the next, just not seen. The fix to this issue is the use of "\only", where the space for components is not reserved across transitions. Such makes the slides look as follows:</p>
+<p>[sourcecode collapse="true"]<br />
+\documentclass{beamer}<br />
+\mode&lt;presentation&gt;<br />
+{<br />
+  \usetheme[width=2cm]{Hannover}<br />
+  \setbeamercovered{transparent}<br />
+}<br />
+\title[Presentation]{Presentation}<br />
+\author[Saher Mohamed El-Neklawy]{Saher Mohamed El-Neklawy}</p>
+<p>\begin{document}<br />
+  \begin{frame}{Frame Title}<br />
+    \begin{columns}<br />
+      \column{0.5\textwidth}<br />
+	\begin{itemize}<br />
+	  \item&lt;2&gt; Item 1<br />
+	  \item&lt;3&gt; Item 2<br />
+	  \item&lt;4&gt; Item 3<br />
+	\end{itemize}<br />
+      \column{0.5\textwidth}<br />
+	\only&lt;2&gt;<br />
+	{<br />
+	  \includegraphics[width=\textwidth]{i1.eps}<br />
+	}<br />
+	\only&lt;3&gt;{<br />
+	  \includegraphics[width=\textwidth]{i2.eps}<br />
+	}<br />
+    \end{columns}<br />
+  \end{frame}<br />
+\end{document}<br />
+[/sourcecode]</p>
+<p>[caption id="attachment_76" align="aligncenter" width="300" caption="Two column slide using \only macro 1"]<a href="http://saherneklawy.files.wordpress.com/2009/12/two_columns_only_1.png"><img class="aligncenter size-medium wp-image-78" title="Two Column using \only" src="assets/two_columns_only_1.png?w=300" alt="" width="300" height="224" /></a>[/caption]</p>
+<p>[caption id="attachment_79" align="aligncenter" width="300" caption="Two column slide using \only macro 2"]<a href="http://saherneklawy.files.wordpress.com/2009/12/two_columns_only_2.png"><img class="size-medium wp-image-79" title="Two column slide using \only macro 2" src="assets/two_columns_only_2.png?w=300" alt="" width="300" height="224" /></a>[/caption]</p>
+<p>When taking a closer look at the <a href="//saherneklawy.files.wordpress.com/2009/12/two_columns_using_only.pdf">output pdf</a>, it will be observed that there is a slight change in the position of the bulleted list. This is most seen between pages 3 and 4 of the pdf. Such is due to the nature of the \only, as it does not reserver the position of component across transitions of the frame. Thus, the location of the bulleted list differs when there is a transition with a slide having a slide to one without, and vice versa.</p>
+<p>This problem could be fixed by going back to the "\visible" macro, as it reserves the spaces for components. The difference this time is is that the location of the image in the slide will be forced. This could be done using the "picture" environment as follows:</p>
+<p>[sourcecode]<br />
+\begin{picture}(0,0)(x,y)<br />
+    \put(0,0){\includegraphics[width=\textwidth]{i1.eps}}<br />
+\end{picture}<br />
+[/sourcecode]</p>
+<p>Take care to consider the x and y values from the top right corner of the column.</p>
+<p>The final code results in this <a href="http://saherneklawy.files.wordpress.com/2009/12/two_columns_final.pdf">pdf</a>, and looks like follows:</p>
+<p>[sourcecode]<br />
+\documentclass{beamer}<br />
+\mode&lt;presentation&gt;<br />
+{<br />
+  \usetheme[width=2cm]{Hannover}<br />
+  \setbeamercovered{transparent}<br />
+}<br />
+\title[Presentation]{Presentation}<br />
+\author[Saher Mohamed El-Neklawy]{Saher Mohamed El-Neklawy}</p>
+<p>\begin{document}<br />
+  \begin{frame}{Frame Title}<br />
+    \begin{columns}<br />
+    \column{0.5\textwidth}<br />
+      \begin{itemize}<br />
+	\item&lt;2&gt; Item 1<br />
+	\item&lt;3&gt; Item 2<br />
+	\item&lt;4&gt; Item 3<br />
+      \end{itemize}<br />
+    \column{0.5\textwidth}<br />
+      \visible&lt;2&gt;<br />
+      {<br />
+	\begin{picture}(0,0)(40,50)<br />
+	  \put(0,0){\includegraphics[width=\textwidth]{i1.eps}}<br />
+	\end{picture}<br />
+      }<br />
+      \visible&lt;3&gt;<br />
+      {<br />
+	\begin{picture}(0,0)(50,50)<br />
+	  \put(0,0){\includegraphics[width=\textwidth]{i2.eps}}<br />
+	\end{picture}<br />
+      }<br />
+    \end{columns}<br />
+  \end{frame}<br />
+\end{document}<br />
+[/sourcecode]</p>

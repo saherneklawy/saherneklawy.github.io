@@ -1,0 +1,34 @@
+---
+layout: post
+title: Finding your true computer name on the network
+date: 2009-10-13 20:57:35.000000000 +02:00
+categories:
+- Technical
+tags:
+- DHCP
+- ip
+- network
+- python
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '10173910'
+author:
+  login: saherneklawy
+  email: saher.neklawy@gmail.com
+  display_name: saherneklawy
+  first_name: ''
+  last_name: ''
+excerpt: !ruby/object:Hpricot::Doc
+  options: {}
+---
+<p>In many cases, it is essential to find the name of a computer over a local network. Such fits well when on a DHCP network, and need to always reach a certain machine.</p>
+<p>An easy way to obtain this data, is via the python <a href="http://docs.python.org/library/socket.html">socket</a> library. The ip of the desired machine is obtained via <code>ipconfig</code> (windows) or <code>ifconfig</code> (linux). For the sake of the example, assume that the ip from the DHCP network is 10.0.0.5.</p>
+<p>In the python interpretor, execute the following code:<br />
+<code><br />
+import socket<br />
+true_name = socket.gethostbyaddr("10.0.0.5")[0]<br />
+print true_name<br />
+</code></p>
+<p>The code above prints the true name of the machine, as seen on the network. This name is not always the machine name. For example the machine name could be "saher-desktop", while the name on the network is "saher-desktop.local".</p>

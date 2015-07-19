@@ -1,0 +1,51 @@
+---
+layout: post
+title: Portable Meld on Windows
+date: 2011-02-12 15:51:14.000000000 +02:00
+categories:
+- Opensource
+tags:
+- diff
+- meld
+- open source
+- python
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '10173910'
+  _wpas_done_twitter: '1'
+author:
+  login: saherneklawy
+  email: saher.neklawy@gmail.com
+  display_name: saherneklawy
+  first_name: ''
+  last_name: ''
+excerpt: !ruby/object:Hpricot::Doc
+  options: {}
+---
+<p>Often I need to compare and merge files or folders together for changes between them. Gladly, many applications exist for such a task. This can come as using the <a href="http://en.wikipedia.org/wiki/Diff" target="_blank">diff</a> command line tool, sadly it is not visually pleasant. Therefore several visual interfaces to ease the comparison side by side. Examples of such are:</p>
+<ul>
+<li><a href="http://www.caffeinated.me.uk/kompare/" target="_blank">kompare</a></li>
+<li><a href="http://kdiff3.sourceforge.net/" target="_blank">kdiff3</a></li>
+<li><a href="http://meld.sourceforge.net/" target="_blank">meld</a></li>
+<li><a href="http://www.scootersoftware.com/" target="_blank">beyond compare</a></li>
+<li><a href="http://winmerge.org/" target="_blank">winmerge</a></li>
+</ul>
+<p>A detailed comparison between the them and others can be found <a href="http://en.wikipedia.org/wiki/Comparison_of_file_comparison_tools" target="_blank">here</a>. My personal favorite of these is <a href="http://meld.sourceforge.net/" target="_blank">meld</a> (specially for folder comparison). On a Linux system, it is quite easy to set up, specially if it is deb bases because there is a package for it. A problem shows up when wanting to use <a href="http://meld.sourceforge.net/" target="_blank">meld</a> in Windows. After some googling I found <a href="http://live.gnome.org/Meld/Windows">this guide</a> showing how to install it for windows. Using this guide, I managed to get it to work, but I prefer a portable installation to take it anywhere.</p>
+<p>Following are the steps I followed to get a portable version of meld up and running. Take care that performing the steps need administrative rights, but it can run anywhere.</p>
+<ol>
+<li>Create a directory to contain meld binaries and its dependencies. Let us reference to it as &lt;meld install dir&gt;</li>
+<li>Download <a href="http://ftp.belnet.be/mirror/PortablePython/v1.1/PortablePython_1.1_py2.6.1.exe">portable python 2.6</a>, and install it under &lt;meld install dir&gt;\Python26</li>
+<li>Add the portable python installation to the registry. This is done by opening the portable python interpretor an running the script from <a href="http://effbot.org/zone/python-register.htm">here</a></li>
+<li>Download the GKT+ 2.2 run time all in one bundle from <a href="http://www.gtk.org/download-windows.html">here</a>. Extract it to &lt;meld install dir&gt;\gtk+</li>
+<li>Download an install the latest PyGTK libraries. These are the <a href="http://ftp.gnome.org/pub/GNOME/binaries/win32/pygtk/">PyGTK</a>, <a href="http://ftp.gnome.org/pub/GNOME/binaries/win32/pycairo/">PyCairo</a>, and <a href="http://ftp.gnome.org/pub/GNOME/binaries/win32/pygobject/">PyGObject</a> modules. This will install to the correct python based on the registry entry from step 3.</li>
+<li>Download meld 1.5 from <a href="http://ftp.gnome.org/pub/gnome/sources/meld/1.5/">here</a>. Extract it to &lt;meld install dir&gt;\meld-src</li>
+<li>Create a file "&lt;meld install dir&gt;\start-meld.bat". The content of this file is:<br />
+[sourcecode language="bash"]<br />
+@echo off<br />
+set PATH=%CD%\Python26\App;%CD%\gtk+\bin<br />
+python meld-src\bin\meld<br />
+[/sourcecode]</li>
+</ol>
+<p>And that is it, run start-meld.bat and enjoy :)</p>

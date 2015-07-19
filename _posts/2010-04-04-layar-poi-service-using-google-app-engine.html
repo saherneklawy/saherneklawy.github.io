@@ -1,0 +1,110 @@
+---
+layout: post
+title: Layar POI service using Google App Engine
+date: 2010-04-04 18:54:51.000000000 +02:00
+categories:
+- Opensource
+- Technical
+tags:
+- handheld ar
+- layar
+- python
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '10173910'
+  _wpas_done_twitter: '1'
+author:
+  login: saherneklawy
+  email: saher.neklawy@gmail.com
+  display_name: saherneklawy
+  first_name: ''
+  last_name: ''
+excerpt: !ruby/object:Hpricot::Doc
+  options: {}
+---
+<p><a href="http://layar.com/">Layar</a> is a cool handheld augmented reality application that allows to overlay "Layers" on the image seen by a handheld device's camera. One can think of these layers as content that is seen based on your current location. This allows to overlay digital data over actual live imagery.</p>
+<p>The Layar API depends that the source of data (Points Of Interest) is a <a href="http://en.wikipedia.org/wiki/Representational_State_Transfer">RESTful web service</a>, that sends an HTTP GET request, and expects back  a <a href="http://en.wikipedia.org/wiki/JSON">JSON</a> object. The details of the GET parameters, and the required JSON object could be found here in the <a href="http://layar.pbworks.com/GetPointsOfInterest">layar API documentation</a>.</p>
+<p>To create a layer, one needs to provide such a service that provides the Points Of Interest (POI). Such a service could easily be written and provided by <a href="http://code.google.com/appengine/">google app engine</a>. This article will discuss how to do so using the google app engine python SDK, and is highly depends on the <a href="http://code.google.com/appengine/docs/python/gettingstarted/">getting started guide for google app engine through python</a>. Sections 1-4,6 are sufficient for understanding of the coming content. </p>
+<h3>Handling Requests</h3>
+<p>Since requests from layar to the POI web service come in the form of GET requests, the parameters can simply be accessed in the request handling method through:<br />
+[sourcecode language="python"]<br />
+self.request.get(parameter_name)<br />
+[/sourcecode]</p>
+<h3>POI Response</h3>
+<p>The POI response that layar expects is a json object. The API place many restrictions on the response. The first comes in the content type of the HTTP response. Thus, it has to be set as follows:<br />
+[sourcecode language="python"]<br />
+self.response.headers['Content-type'] = 'text/javascript; charset=utf-8'<br />
+[/sourcecode]</p>
+<p>Another restriction is in JSON object returned as a response, where almost all the fields are required by layar. To make things simpler, the object is to be represented as a python object. This could be later converted to a JSON object. The JSON object responded with could be represented as follows (as a minumum):<br />
+[sourcecode lanaguage="javascript"]<br />
+{'layer':'layer name', 'hotspots':list_of_POI, 'errorCode':0, 'errorString':'ok'}<br />
+[/sourcecode]<br />
+Where hotspots is a list of POI object. These object could be represented as:<br />
+[sourcecode language="python"]<br />
+class POI:<br />
+    def __init__(self,poi_id,title,lat,lang):<br />
+        self.actions = []<br />
+        self.id = poi_id<br />
+        self.imageURL = None<br />
+        self.lat = lat<br />
+        self.lon = lang<br />
+        self.distance = None<br />
+        self.title = title<br />
+        self.line2 = None<br />
+        self.line3 = None<br />
+        self.line4 = None<br />
+        self.attribution = &quot;&quot;<br />
+        self.type = 0<br />
+        self.dimenion = 1<br />
+        self.transform = {'rel':True, 'angle':0, 'scale':1.0}<br />
+        self.object = {'baseURL': &quot;&quot;}<br />
+[/sourcecode]</p>
+<h3>From python to JSON</h3>
+<p>As python follows a batteries all included strategy, there are libraries that convert python dictionaries to JSON objects. Even though google app engine uses python, the "json" module is not available. Thankfully, an equivalent one is found through "from django.utils import simplejson". It could be used to convert a python dictionary (that looks frightfully like a JSON object) to a JSON object string as follows:<br />
+[sourcecode language="python"]<br />
+simplejson.dumps({'layer':'guc', 'hotspots':poi_list, 'errorCode':0, 'errorString':'ok'})<br />
+[/sourcecode]<br />
+The problem with simplejson is that it only takes dictionaries or lists. Thus, this poses a problem when using the POI class mentioned earlier. Again, python comes with a rescue, where a dictionary representing the object could be obtained as follows:<br />
+[sourcecode language="python"]<br />
+poi = POI('C1','C1',29986707,31438864)<br />
+poiDictionary = poi1.__dict__<br />
+[/sourcecode]</p>
+<h3>Putting the code together</h3>
+<p>Now that we have the POI object, and the conversion mechanism, we are ready to have a request handler for layar requests. An example of static POIs is as follows:<br />
+[sourcecode language="python"]<br />
+from django.utils import simplejson<br />
+from poi import POI<br />
+from google.appengine.ext import webapp<br />
+from google.appengine.ext.webapp.util import run_wsgi_app</p>
+<p>class POIHandler(webapp.RequestHandler):<br />
+	def get(self):<br />
+		self.response.headers['Content-type'] = 'text/javascript; charset=utf-8'<br />
+		#latitude and longitude is an integer will be divided by 10^6<br />
+		# so take care of accuracy after the division<br />
+		poi1 = POI('C1','C1',29986707,31438864).__dict__<br />
+		poi2 = POI('C2','C2',29986744,31439272).__dict__<br />
+		poi3 = POI('C3','C3',29986995,31438923).__dict__<br />
+		poi4 = POI('C4','C4',29987153,31439245).__dict__<br />
+		poi5 = POI('C5','C5',29986326,31438810).__dict__<br />
+		poi6 = POI('C6','C6',29986688,31438569).__dict__<br />
+		poi7 = POI('C7','C7',29986442,31438370).__dict__<br />
+		pois = [poi1,poi2,poi3,poi4,poi5,poi6,poi7]<br />
+		# final getPOI response dictionary<br />
+		d = {'layer':'guc', 'hotspots':pois, 'errorCode':0, 'errorString':'ok'}<br />
+		self.response.out.write(simplejson.dumps(d))</p>
+<p>application = webapp.WSGIApplication(<br />
+		[('/',POIHandler),<br />
+		 ('/getPOI',POIHandler)],<br />
+		debug=True)</p>
+<p>def main():<br />
+	run_wsgi_app(application)</p>
+<p>if __name__=='__main__':<br />
+	main()<br />
+[/sourcecode]</p>
+<h4> Updates </h4>
+<p>With the new layar 4 api coming soon, and the new features being in <a href="http://layar.pbworks.com/Layar-4-API-changes?utm_source=August+2010&amp;utm_campaign=5bc67acfdf-back&amp;utm_medium=email">beta2</a>, un update of how to add one of my favorite new features is needed. This is having different actions on the entire layar. It can be easily done by adding an action attribute to the final getPOI response dictionary (see code above). An example of the addition is as follows:<br />
+[sourcecode language="python"]<br />
+d['actions'] = [{'uri':'http://google.com','label':'action on the entire layar'}]<br />
+[/sourcecode]</p>

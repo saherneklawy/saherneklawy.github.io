@@ -1,0 +1,28 @@
+---
+layout: post
+title: ! 'Proposal: Hierarchical Unit Testing for less woes'
+date: 2010-10-02 17:54:29.000000000 +02:00
+categories:
+- Computer Science
+tags:
+- testing
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '10173910'
+  _wpas_done_twitter: '1'
+author:
+  login: saherneklawy
+  email: saher.neklawy@gmail.com
+  display_name: saherneklawy
+  first_name: ''
+  last_name: ''
+excerpt: !ruby/object:Hpricot::Doc
+  options: {}
+---
+<p>Disclaimer: The following content is of an idea which might be already existing, so please feel free to comment if you find it in existing testing frameworks :)</p>
+<p>A common problem I face during <a href="http://en.wikipedia.org/wiki/Test-driven_development">test-driven development</a> is when having to tests (for ease i'll call them T1 and T2). T1 and T2 test the functionality of F1 and F2 respectively. The fun starts when F2 is dependent on F1, and both tests fail. In a test suit of thousands of tests, it would be hard to see the correlation from only the report of running the test suite.</p>
+<p>It gets worse when the dependency between tests is not direct. For example  if F3-&gt;F2-&gt;F1 (-&gt; means "depends on"), where only T1 and T3 fail and T2 is fine. These relations need a very careful reviewer of the test results, and one who is well aware of the relations between components and their tests. This might be impossible in HUGE teams spanning many components.</p>
+<p>But what if the testing framework was aware of these relations, and was able to report them. Such relations could be represented for example as new annotations in JUnit. With building the relation graph between tests it would be easy show that T2 might have failed because T1 failed.</p>
+<p>So this is an open call, any one willing to try creating this, if it is not already out there?</p>

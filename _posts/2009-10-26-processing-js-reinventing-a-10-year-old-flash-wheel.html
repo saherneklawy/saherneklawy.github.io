@@ -1,0 +1,32 @@
+---
+layout: post
+title: Processing.js:Reinventing the wheel
+date: 2009-10-26 09:45:51.000000000 +02:00
+categories:
+- Technical
+tags:
+- canvas
+- flash
+- HTML5
+- processing.js
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '10173910'
+author:
+  login: saherneklawy
+  email: saher.neklawy@gmail.com
+  display_name: saherneklawy
+  first_name: ''
+  last_name: ''
+excerpt: !ruby/object:Hpricot::Doc
+  options: {}
+---
+<p><a href="http://en.wikipedia.org/wiki/HTML_5">HTML5</a> is the new standard for web pages. One of the most exciting features that it introduces is the canvas tag. This component allows rendering vector graphics on the browser. This was not previously possible with older HTML versions.</p>
+<p>With that advancement in HTML, new JavaScript libraries emerge to be able to create vector visualizations at the client side. One of these libraries is <a href="http://processingjs.org/">Processing.js</a>, which is a port of the <a href="http://processing.org/">java processing</a> library.</p>
+<p>For a first look at processing, the examples show very exciting examples. But the week point of the framework shows when try to develop an application that required much interaction week. To reach such an application, the "processing.js" written has to be highly optimized. No room for unnecessary code execution, use of floats or doubles, cache as much as you can, etc....</p>
+<p>My other issue with <a href="http://processingjs.org/">Processing.js</a> is the fact that they ported from the java library everything, even the syntax. This comes to be very frustrating to web developers. The first reason for that is most web developers are used to the syntax of JavaScript, so having things like <code>int x=0;</code> and <code>int [] arr = new int[4];</code> come as a big surprise. This could be good for the java developer, but not the the web developer.</p>
+<p>My other bone to pick with <a href="http://processingjs.org/">Processing.js</a> is how primitive it is relative to the current state of the web. There are no components, and you can't define events on specific components. Everything  has to be done from scratch. Further strengthening the point of needing highly optimized code.</p>
+<p>Backing to the title of my post, <a href="http://processingjs.org/">Processing.js</a> tries to provide an alternative for <a href="http://en.wikipedia.org/wiki/Adobe_Flash">Flash</a>. In the web, the major disadvantage of Flash is it's isolation from the rest of the webpage, making it an independent entity. <a href="http://processingjs.org/">Processing.js</a> does not over come this problem, as the visualization code for each canvas is a world of it's own. It can only access normal JavaScript code in the same page (which is possible with ActionScript 3's <a href="http://livedocs.adobe.com/flash/9.0/ActionScriptLangRefV3/flash/external/ExternalInterface.html">ExternalInterface</a>). This problem even escalates with lack of direct communication between different canvases directly using Processing.js code. Furthermore, Flash is currently cross browser compatible, unlike the canvas tag due to it's new addition to the HTML standard.</p>
+<p>Putting all the above factors in mind, I feel that using a the much mature flash plugin libraries which are closer to web developers is the best option currently in the market until the canvas tag matures more with richer libraries.</p>

@@ -1,0 +1,44 @@
+---
+layout: post
+title: Running launchpad remotely
+date: 2009-11-04 22:58:28.000000000 +02:00
+categories:
+- Technical
+tags:
+- Canonical
+- launchpad
+- software colaboration
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '10173910'
+  _wpas_done_twitter: '1'
+  _oembed_cae27a476243244ea5d42d83399fb9ad: ! '{{unknown}}'
+author:
+  login: saherneklawy
+  email: saher.neklawy@gmail.com
+  display_name: saherneklawy
+  first_name: ''
+  last_name: ''
+excerpt: !ruby/object:Hpricot::Doc
+  options: {}
+---
+<p><a href="https://launchpad.net/">Launchpad </a>is a software collaboration platform developed by <a href="http://www.canonical.com/">Canonical</a> (famous for <a href="http://www.ubuntu.com/">Ubuntu</a> :D). Recently the the launchpad project <a href="http://blog.launchpad.net/general/launchpad-is-now-open-source">went open source</a>. This allowed people to host copies of it locally. The process for the installation process could be found <a href="https://dev.launchpad.net/Getting">here</a>.</p>
+<p>The next natural step is to configure remote computers to be able to access launchpad. After following the <a href="https://dev.launchpad.net/Running/RemoteAccess">how-to</a> by launchpad, and trying the access the local copy of launchpad from an external source, the following error is shown by the running launchpad server:</p>
+<pre>NotFound: Object: &lt;canonical.launchpad.webapp.servers.ProtocolErrorPublication
+object at 0x8157b50&gt;, name: ''</pre>
+<p>The solution to this lies in the /etc/hosts file on the <strong>client</strong> accessing the lauchpad copy. The file should contain the following:</p>
+<pre>{ip for server}      launchpad.dev answers.launchpad.dev api.launchpad.dev
+bazaar-internal.launchpad.dev beta.launchpad.dev
+blueprints.launchpad.dev bugs.launchpad.dev code.launchpad.dev
+feeds.launchpad.dev id.launchpad.dev keyserver.launchpad.dev
+lists.launchpad.dev openid.launchpad.dev ppa.launchpad.dev
+private-ppa.launchpad.dev shipit.edubuntu.dev shipit.kubuntu.dev
+shipit.ubuntu.dev translations.launchpad.dev
+xmlrpc-private.launchpad.dev xmlrpc.launchpad.dev
+
+{ip for server}      bazaar.launchpad.dev</pre>
+<p>{ip of the server} is the ip of the machine containing the running copy of the launchpad server. Also take care the lines starting with {ip of the server} until an empty line should be a single line in the file. For client systems that are not linux, check out the <a href="http://en.wikipedia.org/wiki/Hosts_file">Wikipedia article concerning hosts</a> for the files equivalent to "/etc/hosts".</p>
+<p>To run launchpad, access <a href="https://launchpad.dev/">https://launchpad.dev/</a>.</p>
+<p>On a side note, when installing launchpad, it does not add scripts for running automatically at startup, this process has to be done manually.</p>

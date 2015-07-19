@@ -1,0 +1,30 @@
+---
+layout: post
+title: The ubiquitous jQuery, the nouns, and the documentation
+date: 2009-10-19 21:19:10.000000000 +02:00
+categories:
+- Opensource
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '10173910'
+author:
+  login: saherneklawy
+  email: saher.neklawy@gmail.com
+  display_name: saherneklawy
+  first_name: ''
+  last_name: ''
+excerpt: !ruby/object:Hpricot::Doc
+  options: {}
+---
+<p>With starting up the <a href="http://se.bigbuddysociety.net/wiki/index.php?title=Main_Page">German University in Cairo Open Source Community (g-osc)</a> working along the <a href="http://se.bigbuddysociety.net/wiki/index.php?title=OSSE">open source course</a>, we were assigned to write <a href="https://ubiquity.mozilla.com/">ubiquity</a> commands for our community to use. This would make it easier for users to access different functionalities. I choose to build a command that would submit issues to the g-osc issue tracker.</p>
+<p>As I had some experience building very simple commands for some of my own day to day internet surfing, I decided to focus on this command a bit more to see the full potential of <a href="https://ubiquity.mozilla.com/">ubiquity</a>. This was to provide the means of submitting an issue in the most natural way. As I went through details of the <a href="https://wiki.mozilla.org/Labs/Ubiquity/Ubiquity_0.5_Author_Tutorial">ubiquity tutorial</a>, I figured that a natural approach for defining how the command will be used is as follow:</p>
+<p><code>gosc post issue {issue title} to {user issue will be assigned to} as {type of issue}</code></p>
+<p>Such a formulation is similar to how it would be written in normal English.</p>
+<p>The first design question was, how will be the issue submitter be known. This is automatically figured out by <a href="http://www.mediawiki.org/wiki/MediaWiki">mediawiki</a>, though the browser session. In other words, if a user is already logged in, then mediawiki knows this information on its own. With that issue out of the way, there was no need to write specific login functions.</p>
+<p>The next step, was to reverse engineer the issue posting form, so that <a href="http://en.wikipedia.org/wiki/Ajax_(programming)">AJAX</a> would be able to send the information as if a user was filling the form manually.  After obtaining the form information, the next obstacal was actually send the data. This was straight forward task, due to the inclusion of the JavaScript <a href="http://jquery.com/">jQuery</a> library within  ubiquity. This a very strong feature, due to <a href="http://blog.creonfx.com/javascript/mootools-vs-jquery-vs-prototype-vs-yui-vs-dojo-comparison-revised">strength of jQuery</a>.</p>
+<p>With that out of the way, the command was able to submit issues to the tracker. The next step was to be able to format the command natually, and to provide auto-completion for the available users and types of issues. This was done using <a href="https://wiki.mozilla.org/Labs/Ubiquity/Ubiquity_0.5_Author_Tutorial#Introduction_to_Noun_Types">ubiquity nouns</a>. These tell ubiquity that a certain argument has a specific format. This idea is same as auto-completion,  where the specific format is a specific set of word.  In both the users and issue types, this data has to be dynamically loaded. Again, jQuery was used to load the form page, and parse the data to obtain the data inside the combo boxes.</p>
+<p>A problem that comes up with auto-completion and loading dynamic data, is the need for doing the AJAX call with every key stoke. This is very expensive. The first solution that came to my mind was to cache the data, and refresh it every time the <a href="https://wiki.mozilla.org/Labs/Ubiquity/Ubiquity_0.5_Author_Tutorial#Running_on_page_load.2C_Ubiquity_load_and_startup">ubiquity command line is loaded</a>. Sadly, as i mentioned in a previous <a href="http://saherneklawy.wordpress.com/2009/10/12/software-versions-documentation-and-the-pain/">post</a>, the ubiquity documentation is not very accurate. Thus this cache technique was not successful, as the function for handing the loading function was not called. The alternative solution, was to cache the content only once.</p>
+<p>With both the auto-completion working well, and a preview of the possible users present the command was complete. The complete code for the issue submission command could be found <a href="http://se.bigbuddysociety.net/wiki/index.php?title=G-osc_ubiquity_commands#g-osc_post_issue">here</a>.</p>
