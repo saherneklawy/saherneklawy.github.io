@@ -1,0 +1,162 @@
+<html>
+    <head>
+        <style>
+            body {
+              background-color: skyblue;   
+            }
+
+            h1 {
+                color: #aaff02;
+                background-color: gray;
+                font-size: 80px;
+            }
+
+            #test {
+                color: blue;
+            }
+
+            #list-to-change li {
+                list-style-type: circle;
+            }
+
+            .list-to-change-repeated {
+                color: red;
+            }
+
+            .red-button {
+                color: black;
+                background-color: red;
+                font-size: 200px;
+                border: 10px solid green;
+                border-radius: 50%;
+                width: 200px;
+                height: 200px;
+
+            }
+
+            .red-button img {
+                width: 100%;
+                height: 100%;
+            }
+
+            #toolbar {
+                background-color: green;
+                display: flex;
+                justify-content: flex-start;
+            }
+        </style>
+    </head>
+        <body>
+            <p id="toolbar">
+                <button class="red-button">
+                    <img src="data:image/jpeg;base64,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"></img>
+                </button>
+                <button class="red-button">
+                    <img src="data:image/jpeg;base64,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"></img>
+                </button>
+            </p>
+
+
+
+            <!-- comment -->
+            <h1>كاتبي</h1>
+            <h1 id="test">كاتبي ٢</h1>
+    
+            <h2>فهرس</h2>
+
+            <ul id="list-to-change">
+            <li>
+                <a href="#فقرة١">
+                ما هو "لوريم إيبسوم" ؟
+                </a>
+                </li>
+            <li>bo2loz</li>
+            <li>ما فائدته ؟</li>
+            <li>ما أصله ؟ </li>
+            </ul>
+            
+            <ul>
+            <li class="list-to-change-repeated">
+                <a href="#فقرة١">
+                ما هو "لوريم إيبسوم" ؟
+                </a>
+            </li>
+            <li>bo2loz</li>
+            <li class="list-to-change-repeated">ما فائدته ؟</li>
+            <li class="list-to-change-repeated">ما أصله ؟ </li>
+            </ul>
+    
+
+            <ul>
+              <li>
+                  <a href="#فقرة١">
+                  ما هو "لوريم إيبسوم" ؟
+                  </a>
+                </li>
+              <li>ما فائدته ؟</li>
+              <li>ما أصله ؟ </li>
+            </ul>
+    
+            <h2 id="فقرة١">ما هو "لوريم إيبسوم" ؟</h2>
+            <p>لوريم إيبسوم(Lorem Ipsum) هو ببساطة نص شكلي (بمعنى أن الغاية هي الشكل وليس المحتوى) ويُستخدم في صناعات المطابع ودور النشر. كان لوريم إيبسوم ولايزال المعيار للنص الشكلي منذ القرن الخامس عشر عندما قامت مطبعة مجهولة برص مجموعة من الأحرف بشكل عشوائي أخذتها من نص، لتكوّن كتيّب بمثابة دليل أو مرجع شكلي لهذه الأحرف. خمسة قرون من الزمن لم تقضي على هذا النص، بل انه حتى صار مستخدماً وبشكله الأصلي في الطباعة والتنضيد الإلكتروني. انتشر بشكل كبير في ستينيّات هذا القرن مع إصدار رقائق "ليتراسيت" (Letraset) البلاستيكية تحوي مقاطع من هذا النص، وعاد لينتشر مرة أخرى مؤخراَ مع ظهور برامج النشر الإلكتروني مثل "ألدوس بايج مايكر" (Aldus PageMaker) والتي حوت أيضاً على نسخ من نص لوريم إيبسوم.</p>
+    
+            <h2>ما فائدته ؟</h2>
+            <p>هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات في الصفحة التي يقرأها. ولذلك يتم استخدام طريقة لوريم إيبسوم لأنها تعطي توزيعاَ طبيعياَ -إلى حد ما- للأحرف عوضاً عن استخدام "هنا يوجد محتوى نصي، هنا يوجد محتوى نصي" فتجعلها تبدو (أي الأحرف) وكأنها نص مقروء. العديد من برامح النشر المكتبي وبرامح تحرير صفحات الويب تستخدم لوريم إيبسوم بشكل إفتراضي كنموذج عن النص، وإذا قمت بإدخال "lorem ipsum" في أي محرك بحث ستظهر العديد من المواقع الحديثة العهد في نتائج البحث. على مدى السنين ظهرت نسخ جديدة ومختلفة من نص لوريم إيبسوم، أحياناً عن طريق الصدفة، وأحياناً عن عمد كإدخال بعض العبارات الفكاهية إليها.</p>
+
+            <h2>ما أصله ؟ </h2>
+            <p>لافاَ للإعتقاد السائد فإن لوريم إيبسوم ليس نصاَ عشوائياً، بل إن له جذور في الأدب اللاتيني الكلاسيكي منذ العام 45 قبل الميلاد، مما يجعله أكثر من 2000 عام في القدم. قام البروفيسور "ريتشارد ماك لينتوك" (Richard McClintock) وهو بروفيسور اللغة اللاتينية في جامعة هامبدن-سيدني في فيرجينيا بالبحث عن أصول كلمة لاتينية غامضة في نص لوريم إيبسوم وهي "consectetur"، وخلال تتبعه لهذه الكلمة في الأدب اللاتيني اكتشف المصدر الغير قابل للشك. فلقد اتضح أن كلمات نص لوريم إيبسوم تأتي من الأقسام 1.10.32 و 1.10.33 من كتاب "حول أقاصي الخير والشر" (de Finibus Bonorum et Malorum) للمفكر شيشيرون (Cicero) والذي كتبه في عام 45 قبل الميلاد. هذا الكتاب هو بمثابة مقالة علمية مطولة في نظرية الأخلاق، وكان له شعبية كبيرة في عصر النهضة. السطر الأول من لوريم إيبسوم "Lorem ipsum dolor sit amet.." يأتي من سطر في القسم 1.20.32 من هذا الكتاب.</p>
+
+            <hr></hr>
+
+
+            <table>
+                    <thead>
+                        <tr>
+                            <th>ع١</th>
+                            <th>ع٢</th>
+                            <th>ع٣</th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                            <tr>
+                                    <td>1</td>
+                                    <td>2</td>
+                                    <td>3</td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>5</td>
+                                    <td>6</td>
+                                </tr>
+                                <tr>
+                                    <td>7</td>
+                                    <td>8</td>
+                                    <td>9</td>
+                                    <td>10</td>
+                                </tr>
+    
+                    </tbody>
+                    
+                </table>
+
+
+
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>sdsadads</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>sdaldskj</td>
+                            <td>sdaldskj</td>
+                        </tr>
+                    </tbody>
+                </table>
+        </body>
+    </html>
+    
